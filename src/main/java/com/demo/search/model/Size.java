@@ -1,17 +1,18 @@
 package com.demo.search.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class Size {
     @Id
     private Integer id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Product product;
     @Column(name="back_soon")
     private boolean backSoon;

@@ -1,18 +1,19 @@
 package com.demo.search.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Size size;
     private Integer quantity;
 }

@@ -1,14 +1,15 @@
 package com.demo.search.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-@Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class Product {
     @Id
     private Integer id;
