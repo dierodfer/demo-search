@@ -8,13 +8,13 @@ import com.demo.search.repository.SizeRepository;
 import com.demo.search.repository.StockRepository;
 import com.demo.search.util.UtilCsv;
 import com.opencsv.exceptions.CsvException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,5 +51,13 @@ public class SearchServiceImpl implements SearchService{
         productRepository.saveAll(products);
         sizeRepository.saveAllAndFlush(sizes);
         stockRepository.saveAll(stocks);
+    }
+
+    @Override
+    public List<Product> getVisibleProducts() {
+        return productRepository.findAll().stream()
+                .filter(Product::isVisible)
+                .sorted(Comparator.comparing(Product::getSequence))
+                .collect(Collectors.toList());
     }
 }
