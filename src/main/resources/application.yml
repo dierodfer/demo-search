@@ -8,5 +8,8 @@ spring:
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
-    generate-ddl: true
-    hibernate.ddl-auto: create
+#    generate-ddl: true
+#    hibernate.ddl-auto: create
+  flyway:
+    enabled: true
+    locations: classpath:/scripts
