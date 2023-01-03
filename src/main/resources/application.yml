@@ -13,3 +13,8 @@ spring:
   flyway:
     enabled: true
     locations: classpath:/scripts
+application:
+  files:
+    product: 'product.csv'
+    size: 'size.csv'
+    stock: 'stocks.csv'

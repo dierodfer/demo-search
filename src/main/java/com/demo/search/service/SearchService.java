@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface SearchService {
 
-    void load() throws IOException, URISyntaxException, CsvException;
+    Boolean load() throws IOException, URISyntaxException, CsvException;
     List<Product> getVisibleProducts();
 }

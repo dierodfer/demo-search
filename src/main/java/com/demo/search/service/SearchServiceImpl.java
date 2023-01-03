@@ -9,6 +9,7 @@ import com.demo.search.repository.StockRepository;
 import com.demo.search.util.UtilCsv;
 import com.opencsv.exceptions.CsvException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,17 +25,20 @@ public class SearchServiceImpl implements SearchService{
     @Autowired ProductRepository productRepository;
     @Autowired SizeRepository sizeRepository;
     @Autowired StockRepository stockRepository;
+    @Value("${application.files.product}") String productFileName;
+    @Value("${application.files.size}") String sizeFileName;
+    @Value("${application.files.stock}") String stockFileName;
 
     @Override
     @Transactional
-    public void load() throws IOException, URISyntaxException, CsvException {
-        List<Product> products = UtilCsv.readCsv("product.csv")
+    public Boolean load() throws IOException, URISyntaxException, CsvException {
+        List<Product> products = UtilCsv.readCsv(productFileName)
                 .stream().map(attributes -> Product.builder()
                         .id(Integer.parseInt(attributes[0]))
                         .sequence(Integer.parseInt(attributes[1]))
                         .build()).collect(Collectors.toList());
 
-        List<Size> sizes = UtilCsv.readCsv("size.csv")
+        List<Size> sizes = UtilCsv.readCsv(sizeFileName)
                 .stream().map(attributes -> Size.builder()
                         .id(Integer.parseInt(attributes[0]))
                         .product(Product.builder().id(Integer.parseInt(attributes[1])).build())
@@ -42,7 +46,7 @@ public class SearchServiceImpl implements SearchService{
                         .special(Boolean.parseBoolean(attributes[3]))
                         .build()).collect(Collectors.toList());
 
-        List<Stock> stocks = UtilCsv.readCsv("stock.csv")
+        List<Stock> stocks = UtilCsv.readCsv(stockFileName)
                 .stream().map(attributes -> Stock.builder()
                         .size(Size.builder().id(Integer.parseInt(attributes[0])).build())
                         .quantity(Integer.parseInt(attributes[1]))
@@ -51,6 +55,7 @@ public class SearchServiceImpl implements SearchService{
         productRepository.saveAll(products);
         sizeRepository.saveAllAndFlush(sizes);
         stockRepository.saveAll(stocks);
+        return Boolean.TRUE;
     }
 
     @Override
