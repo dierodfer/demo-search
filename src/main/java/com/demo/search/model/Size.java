@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class Size {
     @Id
     private Integer id;
@@ -22,7 +23,8 @@ public class Size {
     private Boolean backSoon;
     private Boolean special;
     @OneToMany(mappedBy = "size")
-    private List<Stock> stocks;
+    @Builder.Default
+    private List<Stock> stocks = List.of();
     @CreationTimestamp
     private LocalDateTime dateCreation;
     @UpdateTimestamp

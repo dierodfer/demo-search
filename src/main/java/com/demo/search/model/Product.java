@@ -15,12 +15,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class Product {
     @Id
     private Integer id;
     private Integer sequence;
     @OneToMany(mappedBy = "product")
-    private List<Size> sizes;
+    @Builder.Default
+    private List<Size> sizes = List.of();
     @CreationTimestamp
     private LocalDateTime dateCreation;
     @UpdateTimestamp

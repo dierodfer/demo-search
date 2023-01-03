@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
