@@ -1,4 +1,4 @@
-package com.demo.search;
+package com.demo.search.service;
 
 import com.demo.search.model.Product;
 import com.demo.search.model.Size;
@@ -6,7 +6,6 @@ import com.demo.search.model.Stock;
 import com.demo.search.repository.ProductRepository;
 import com.demo.search.repository.SizeRepository;
 import com.demo.search.repository.StockRepository;
-import com.demo.search.service.SearchServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class SearchApplicationTests {
+class SearchUnitTest {
 
 	@InjectMocks
 	SearchServiceImpl searchService;
@@ -30,13 +29,9 @@ class SearchApplicationTests {
 	@Mock
 	StockRepository stockRepository;
 
-	Product product1;
-	Product product2;
-	Size sizeSpecial;
-	Size sizeBackSoon;
-	Size sizeNormal;
-	Stock stock;
-	Stock stockZero;
+	Product product1, product2;
+	Size sizeSpecial, sizeBackSoon, sizeNormal;
+	Stock stock, stockZero;
 
 	@BeforeEach
 	void beforeEach(){
@@ -47,51 +42,47 @@ class SearchApplicationTests {
 		sizeSpecial = Size.builder().id(2).backSoon(true).special(true).build();
 		product1 = Product.builder().id(1).sequence(2).build();
 		product2 = Product.builder().id(2).sequence(1).build();
+		when(productRepository.findAll()).thenReturn(List.of(product1,product2));
 	}
 
 	@Test
-	void bussinessRuleConditionZero() {
+	void businessRuleConditionZero() {
 		sizeNormal.setStocks(List.of(stock));
 		product1.setSizes(List.of(sizeNormal));
-		when(productRepository.findAll()).thenReturn(List.of(product1,product2));
 		List<Product> products = searchService.getVisibleProducts();
 		assertEquals(1,products.size());
 		assertEquals(1,products.get(0).getId());
 	}
 
 	@Test
-	void bussinessRuleFirstCondition() {
+	void businessRuleFirstCondition() {
 		sizeBackSoon.setStocks(List.of(stockZero));
 		product1.setSizes(List.of(sizeBackSoon));
-		when(productRepository.findAll()).thenReturn(List.of(product1,product2));
 		List<Product> products = searchService.getVisibleProducts();
 		assertEquals(1,products.size());
 		assertEquals(1,products.get(0).getId());
 	}
 
 	@Test
-	void bussinessRuleSecondConditionA() {
+	void businessRuleSecondConditionA() {
 		product1.setSizes(List.of(sizeBackSoon,sizeSpecial));
-		when(productRepository.findAll()).thenReturn(List.of(product1,product2));
 		List<Product> products = searchService.getVisibleProducts();
 		assertEquals(1,products.size());
 		assertEquals(1,products.get(0).getId());
 	}
 
 	@Test
-	void bussinessRuleSecondConditionB() {
+	void businessRuleSecondConditionB() {
 		sizeNormal.setStocks(List.of(stock));
 		product1.setSizes(List.of(sizeNormal,sizeSpecial));
-		when(productRepository.findAll()).thenReturn(List.of(product1,product2));
 		List<Product> products = searchService.getVisibleProducts();
 		assertEquals(1,products.size());
 		assertEquals(1,products.get(0).getId());
 	}
 
 	@Test
-	void bussinessRuleSecondConditionC() {
+	void businessRuleSecondConditionC() {
 		product1.setSizes(List.of(sizeSpecial));
-		when(productRepository.findAll()).thenReturn(List.of(product1,product2));
 		List<Product> products = searchService.getVisibleProducts();
 		assertEquals(0,products.size());
 	}
