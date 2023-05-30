@@ -1,29 +1,38 @@
 # demo-search
-Demo project for search algorithm with H2 in memory embedded 
+Demo project for search algorithm with PostgreSQL container
 
 ## Requirements
 - JDK >= 11
-- Maven
+- Docker
 
-## Compile
+## Compile maven depedencies
 ```
-mvn clean install -s .mvn/wrapper/settings.xml
+./mvnw clean install -DskipTests -s .mvn/wrapper/settings.xml       #Linux
+mvnw.cmd clean install -DskipTests -s .mvn/wrapper/settings.xml     #Windows
+```
+
+## Database container
+```
+docker-compose down & docker-compose up -d
+```
+
+## Database connection
+```
+address: localhost:5432
+DB: demo
+user: demo
+password: root
 ```
 
 ## Start application
 ```
-mvn spring-boot:run
-```
-
-## Access H2
-```
-http://localhost:8080/h2-console/
-URL: jdbc:h2:mem:demosearch
-user: SA (no password)
+./mvnw spring-boot:run      #Linux
+mvnw.cmd spring-boot:run    #Windows
 ```
 
 
 ## Unit Tests
 ```
-mvn test
+./mvnw test     #Linux
+mvnw.cmd test   #Windows
 ```

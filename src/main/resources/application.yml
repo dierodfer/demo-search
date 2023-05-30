@@ -1,15 +1,11 @@
 spring:
   output.ansi.enabled: ALWAYS
-  h2.console.enabled: true
   datasource:
-    url: jdbc:h2:mem:demosearch
-    driverClassName: org.h2.Driver
-    username: sa
+    url: jdbc:postgresql://localhost:5432/demo
+    username: demo
+    password: root
   jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
-#    generate-ddl: true
-#    hibernate.ddl-auto: create
   flyway:
     enabled: true
     locations: classpath:/scripts
