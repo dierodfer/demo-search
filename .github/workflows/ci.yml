@@ -16,13 +16,9 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-    - name: Build Maven
-      run: mvn install -DskipTests
-    - name: Setup docker compose
+    - name: Setup & run docker compose
       uses: isbang/compose-action@v1.4.1
       with:
         compose-file: "./docker-compose.yml"
-    - name: Build and run Docker Compose
-      run: docker-compose up -d
     - name: Run test
       run: mvn test
