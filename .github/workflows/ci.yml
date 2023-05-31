@@ -1,6 +1,10 @@
 name: Maven Package
 
-on: [push]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -14,5 +18,10 @@ jobs:
         distribution: 'temurin'
     - name: Build Maven
       run: mvn install -DskipTests
+    - name: Setup docker compose
+      uses: isbang/compose-action@v1
+      with:
+        compose-file: "./docker-compose.yml"
+        up-flags: "-d"
     - name: Run test
       run: mvn test
